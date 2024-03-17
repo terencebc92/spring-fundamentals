@@ -151,6 +151,13 @@
         </property>
     </bean>
 
+    <!--    Event Listener Demo    -->
+    <bean id = "cStartEventHandler" class = "com.hello.eventhandlerdemo.CStartEventHandler"/>
+    <bean id = "cStopEventHandler" class = "com.hello.eventhandlerdemo.CStopEventHandler"/>
+
+    <!--    Custom Event Listener Demo    -->
+    <bean id = "customEventHandler" class = "com.hello.eventhandlercustomdemo.CustomEventHandler"/>
+    <bean id = "customEventPublisher" class = "com.hello.eventhandlercustomdemo.CustomEventPublisher"/>
 
     <!--    &lt;!&ndash; A bean definition with lazy init set on &ndash;&gt;-->
     <!--    <bean id = "..." class = "..." lazy-init = "true">-->
