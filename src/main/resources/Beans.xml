@@ -3,14 +3,18 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop = "http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
    http://www.springframework.org/schema/context
-   http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+   http://www.springframework.org/schema/context/spring-context-3.0.xsd
+   http://www.springframework.org/schema/aop
+   http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
 
     <!--    Below element enables you to start annotating code to indicate that
     Spring automatically wire values into properties, methods and constructors-->
     <context:annotation-config/>
+
 
     <!--    These two attributes: default-init-method, default-destroy-method
     can be defined within the beans tag if you don't want to define init/destroy in every
@@ -173,6 +177,42 @@
     <!--    <bean id = "..." class = "..." destroy-method = "...">-->
     <!--        &lt;!&ndash; collaborators and configuration for this bean go here &ndash;&gt;-->
     <!--    </bean>-->
+
+    <!--    Aspect demo     -->
+    <aop:config>
+        <aop:aspect id = "log" ref = "logging">
+            <aop:pointcut id = "selectAll"
+                          expression = "execution(* com.hello.aspectdemo.*.*(..))"/>
+
+            <aop:before pointcut-ref = "selectAll" method = "beforeAdvice"/>
+            <aop:after pointcut-ref = "selectAll" method = "afterAdvice"/>
+            <aop:after-returning pointcut-ref = "selectAll"
+                                 returning = "retVal" method = "afterReturningAdvice"/>
+
+            <aop:after-throwing pointcut-ref = "selectAll"
+                                throwing = "ex" method = "AfterThrowingAdvice"/>
+
+<!--            <aop:around pointcut-ref = "selectAll" method = "aroundAdvice"/>-->
+        </aop:aspect>
+    </aop:config>
+
+
+    <!-- Definition for student bean -->
+    <bean id = "student" class = "com.hello.aspectdemo.Student">
+        <property name = "name" value = "Zara" />
+        <property name = "age" value = "11"/>
+    </bean>
+
+    <!-- This config below is for aspectJ   -->
+    <aop:aspectj-autoproxy/>
+    <bean id = "studentj" class = "com.hello.aspectjdemo.Student">
+        <property name = "name" value = "J-Zara" />
+        <property name = "age"  value = "12"/>
+    </bean>
+
+    <!-- Definition for logging aspect -->
+    <bean id = "logging" class = "com.hello.aspectdemo.Logging"/>
+    <bean id = "loggingj" class = "com.hello.aspectjdemo.Logging"/>
 
 
 </beans>
